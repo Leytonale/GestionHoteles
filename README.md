@@ -1,4 +1,4 @@
-# Proyecto de Sistema de Gestión de Alquiler de Hoteles
+# Sistema de Gestión de Alquiler de Hoteles
 
 Repositorio del proyecto de Sistema de Gestión de Alquiler de Hoteles. Este proyecto tiene como objetivo desarrollar una solución eficiente para la gestión de alquiler de habitaciones en hoteles.
 
