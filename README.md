@@ -14,3 +14,11 @@ Repositorio del proyecto de Sistema de Gestión de Alquiler de Hoteles. Este pro
 - **/docs:** Contiene la documentación del proyecto.
 - **/src:** Contiene el código fuente del proyecto.
 - **/tests:** Contiene los casos de prueba y resultados de pruebas.
+
+
+## Tecnologías Utilizadas
+
+   - Python
+   - Flask
+   - MySQL
+   - SQLAlchemy
