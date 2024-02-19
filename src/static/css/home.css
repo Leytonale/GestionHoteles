@@ -1,0 +1,87 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #333;
+}
+
+p {
+    color: #555;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: #007BFF;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+.user-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-section {
+    background-color: #ffc107; /* Amarillo para la sección de administradores */
+}
+
+.admin-section ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.admin-section li {
+    margin-bottom: 15px;
+    border: solid 1px black;
+    width: 192px;
+}
+
+.admin-section a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffc107; /* Amarillo para los botones */
+    color: #333;
+    border: 2px solid #ffc107; /* Borde del mismo color que el fondo para resaltar */
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.admin-section a:hover {
+    background-color: #ffcc00; /* Amarillo claro al pasar el ratón */
+    color: #fff;
+    border-color: #ffcc00; /* Borde claro al pasar el ratón */
+}
+
+.guest-section {
+    background-color: #28a745; 
+}

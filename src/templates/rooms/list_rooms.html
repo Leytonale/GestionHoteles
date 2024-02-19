@@ -1,0 +1,58 @@
+<!-- templates/rooms/list_rooms.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/list_rooms.css') }}">
+    <title>List of Rooms</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>List of Rooms</h1>
+
+        {% if current_user.role == 'guest' %}
+        <div class="guest-section">
+            <h2>Available Rooms</h2>
+            {% if available_rooms %}
+            <ul>
+                {% for room in available_rooms %}
+                <li>{{ room.number }} - {{ room.status }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No available rooms at the moment. Please check again later or contact the hotel.</p>
+            {% endif %}
+            <p><a href="{{ url_for('home') }}">Back to Home</a></p>
+        </div>
+        {% elif current_user.role == 'admin' %}
+        <div class="admin-section">
+            <h2>All Rooms</h2>
+            <form action="{{ url_for('filter_rooms') }}" method="post">
+                <label for="status">Filter by Status:</label>
+                <select name="status" id="status">
+                    <option value="all">All</option>
+                    <option value="Disponible">Available</option>
+                    <option value="Ocupada">Occupied</option>
+                    <option value="Deshabilitada">Deshabilitada</option>
+                </select>
+            <div id="submitboton">
+                <input type="submit" value="Filter"></div>
+            </form>
+            <ul>
+                {% for room in rooms %}
+                <li>{{ room.number }} - {{ room.status }}</li>
+                {% endfor %}
+            </ul>
+            <div class="button-align">
+                <p><a href="{{ url_for('dashboard') }}">Volver al panel</a></p>
+        </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>

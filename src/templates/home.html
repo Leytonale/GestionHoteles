@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <title>Home</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenido a la Página de Inicio</h1>
+
+        {% if current_user.is_authenticated %}
+            <p>Hola, {{ current_user.first_name }}!</p>
+
+            {% if current_user.role == 'admin' %}
+                <div class="user-section admin-section">
+                    <h2>Sección para Administradores</h2>
+                    <ul>
+                        <li><a href="/dashboard">Dashboard</a></li>
+                        <li><a href="/rooms">Listar Habitaciones</a></li>
+                        <li><a href="/logout">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            {% elif current_user.role == 'guest' %}
+                <div class="user-section guest-section">
+                    <h2>Sección para Invitados</h2>
+                    <ul>
+                        <li><a href="/rooms">Listar Habitaciones</a></li>
+                        <li><a href="/reservations">Listar Reservas</a></li>
+                        <li><a href="/logout">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            {% endif %}
+        {% else %}
+            <p>Por favor, inicia sesión para acceder a esta página.</p>
+            <a href="{{ url_for('login') }}">Iniciar sesión</a>
+        {% endif %}
+    </div>
+</body>
+</html>

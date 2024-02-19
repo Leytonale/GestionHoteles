@@ -1,0 +1,63 @@
+<!-- templates/dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <section id="welcome-section">
+        <h1>Welcome, {{ user.first_name }}!</h1>
+        <p>Role: {{ user.role }}</p>
+    </section>
+
+    <section id="general-stats">
+        <h2>General Statistics</h2>
+        <ul>
+            <li>Total Users: {{ total_users }}</li>
+            <li>Total Rooms: {{ total_rooms }}</li>
+            <li>Total Guests: {{ total_guests }}</li>
+            <li>Total Reservations: {{ total_reservations }}</li>
+        </ul>
+    </section>
+
+    <div class='grid-container'>
+        <section id="manage-users" class="container">
+            <h2>Manage Users</h2>
+            <ul>
+                <li><a href="{{ url_for('view_users') }}" class="dashboard-button">View Users</a></li>
+                <li><a href="{{ url_for('add_user') }}" class="dashboard-button">Add User</a></li>
+                <li><a href="{{ url_for('edit_user') }}" class="dashboard-button">Edit User</a></li>
+                <li><a href="{{ url_for('delete_user') }}" class="dashboard-button">Delete User</a></li>
+            </ul>
+        </section>
+
+        <section id="manage-rooms" class="container">
+            <h2>Manage Rooms</h2>
+            <ul>
+                <li><a href="{{ url_for('list_rooms') }}" class="dashboard-button">View Rooms</a></li>
+                <li><a href="{{ url_for('add_room') }}" class="dashboard-button">Add Room</a></li>
+                <li><a href="{{ url_for('edit_room') }}" class="dashboard-button">Edit Room</a></li>
+                <li><a href="{{ url_for('delete_room') }}" class="dashboard-button">Delete Room</a></li>
+            </ul>
+        </section>
+
+        <section id="manage-reservations" class="container">
+            <h2>Manage Reservations</h2>
+            <ul>
+                <li><a href="{{ url_for('list_reservations') }}" class="dashboard-button">View Reservations</a></li>
+                <li><a href="{{ url_for('book_reservation') }}" class="dashboard-button">Add Reservation</a></li>
+                <li><a href="{{ url_for('edit_reservation') }}" class="dashboard-button">Edit Reservation</a></li>
+                <li><a href="{{ url_for('cancel_reservation') }}" class="dashboard-button">Cancel Reservation</a></li>
+            </ul>
+        </section>
+    </div>
+
+    <div class="centered-btn">
+        <a href="{{ url_for('logout') }}" class="logout-link dashboard-button">Logout</a>
+    </div>
+</body>
+</html>

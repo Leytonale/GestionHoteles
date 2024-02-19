@@ -1,0 +1,35 @@
+<!-- templates/delete_user.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/delete_user.css') }}">
+    <title>Delete User</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Delete User</h1>
+        <p>Enter the details to confirm the deletion of the user.</p>
+
+        <form method="POST" action="{{ url_for('delete_user') }}">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <label for="user_id">User ID:</label>
+                <input type="text" id="user_id" name="user_id" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_username">Confirm Username:</label>
+                <input type="text" id="confirm_username" name="confirm_username" required>
+            </div>
+
+            <button type="submit" class="btn btn-danger">Delete User</button>
+        </form>
+
+        <p><a href="{{ url_for('dashboard') }}">Back to dashboard</a></p>
+    </div>
+</body>
+</html>

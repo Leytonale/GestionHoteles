@@ -1,0 +1,29 @@
+<!-- templates/reservations/edit_reservation.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/edit_reservation.css') }}">
+    <title>Edit Reservation</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Reservation</h1>
+        <form method="POST" action="{{ url_for('edit_reservation') }}" class="edit-reservation-form">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                <label for="reservation_id">Select Reservation:</label>
+                {{ form.reservation_id(class="form-control") }}
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Select Reservation</button>
+        </form>
+        
+        <p><a href="{{ url_for('list_reservations') }}" class="back-link">Back to Reservation List</a></p>
+        <p><a href="{{ url_for('dashboard') }}" class="back-link">Back to Dashboard</a></p>
+    </div>
+</body>
+</html>

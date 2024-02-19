@@ -1,0 +1,33 @@
+<!-- templates/rooms/delete_room.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/delete_room.css') }}">
+    <title>Delete Room</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Borra una Habitacion</h1>
+        <p>Escoge un cuarto para eliminar</p>
+
+        <form method="POST" action="{{ url_for('delete_room') }}">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <label for="room">Select a room:</label>
+                {{ form.room(class="form-control") }}
+            </div>
+            <br>
+
+            <button type="submit">Borrar Habitacion</button>
+        </form>
+
+  <div class="button-align">
+            <p><a href="{{ url_for('dashboard') }}">Volver al panel</a></p>
+    </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/list_reservations.css') }}">
+    <title>List of Reservations</title>
+</head>
+<body>
+    <div class="container">
+        <h1>List of Reservations</h1>
+        {% if current_user.role == 'guest' %}
+            <div>
+                <h2>Your Reservations</h2>
+                <form action="{{ url_for('filter_reservations') }}" method="post">
+                    <label for="status">Filter by Status:</label>
+                    <select name="status" id="status">
+                        <option value="all">All</option>
+                        <option value="Active">Active</option>
+                        <option value="Past">Past</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                    <input type="submit" value="Filter">
+                </form>
+                {% if reservations is not none %}
+                    {% if reservations %}
+                        <ul>
+                            {% for reservation in reservations %}
+                                <li>{{ reservation.room.number }} - {{ reservation.check_in }} - {{ reservation.status }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No reservations found.</p>
+                    {% endif %}
+                {% else %}
+                    <p>Error retrieving reservations.</p>
+                    <p><a href="{{ url_for('home') }}">Back to home</a></p>
+                {% endif %}
+            </div>
+        {% elif current_user.role == 'admin' %}
+            <div>
+                <h2>All Reservations</h2>
+                <form action="{{ url_for('filter_reservations') }}" method="post">
+                    <label for="status">Filter by Status:</label>
+                    <select name="status" id="status">
+                        <option value="all">All</option>
+                        <option value="Active">Active</option>
+                        <option value="Past">Past</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                    <input type="submit" value="Filter">
+                </form>
+                {% if reservations is not none %}
+                    {% if reservations %}
+                        <ul>
+                            {% for reservation in reservations %}
+                                <li>
+                                    {{ reservation.room.number }} - {{ reservation.check_in }} - {{ reservation.status }} 
+                                    | <a href="{{ url_for('edit_reservation', reservation_id=reservation.id) }}">Edit</a>
+                                    | <a href="{{ url_for('delete_reservation', reservation_id=reservation.id) }}">Delete</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No reservations found.</p>
+                    {% endif %}
+                {% else %}
+                    <p>Error retrieving reservations.</p>
+                {% endif %}
+                <p><a href="{{ url_for('dashboard') }}">Back to dashboard</a></p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

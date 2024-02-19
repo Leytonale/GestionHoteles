@@ -1,0 +1,54 @@
+<!-- templates/rooms/add_room.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/add_room.css') }}">
+    <title>Add Room</title>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="encabezado">      <h1>Agregar una Nueva Habitacion</h1>
+        <p>Añadir detalles de la habitacion.</p></div>
+
+        <form method="POST" action="{{ url_for('add_room') }}">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <label for="number">Número:</label>
+                {{ form.number(class="form-control") }}
+            </div>
+
+            <div class="form-group">
+                <label for="status">Estado:</label>
+                {{ form.status(class="form-control") }}
+            </div>
+
+            <div class="form-group">
+                <label for="category">Categoría:</label>
+                {{ form.category(class="form-control") }}
+            </div>
+
+            <div class="form-group">
+                <label for="name">Nombre:</label>
+                {{ form.name(class="form-control") }}
+            </div>
+
+            <div class="form-group">
+                <label for="description">Descripción:</label>
+                {{ form.description(class="form-control") }}
+            </div>
+        <div class="button-align">
+            <button type="submit">Añadir Habitación</button>
+        </div>
+
+        </form>
+
+    <div class="button-align">
+            <p><a href="{{ url_for('dashboard') }}">Volver al panel</a></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Sistema de Gestión Hotelera</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Sistema de Gestión Hotelera</h1>
+
+        {% if current_user.is_authenticated %}
+            <p>Hola, {{ current_user.first_name }}!</p>
+            <p>¡Serás redirigido a tu página de inicio en breve!</p>
+            <script>
+                setTimeout(function() {
+                    window.location.href = "/home";
+                }, 3000);  <!-- Redirige después de 3 segundos, ajusta según sea necesario -->
+            </script>
+        {% else %}
+            <p>¡Bienvenido a tu sistema de gestión hotelera!</p>
+            <p>En nuestro sistema, podrás administrar y gestionar las habitaciones, usuarios, reservaciones y más.</p>
+            <ul>
+                <li><a href="/login">Iniciar sesión</a></li>
+                <li><a href="/register">Registrarse</a></li>
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>

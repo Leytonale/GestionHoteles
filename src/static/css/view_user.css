@@ -1,0 +1,41 @@
+/* static/css/view_users.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1, p {
+    color: #333;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.user-table th, .user-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+.back-link {
+    text-decoration: none;
+    color: #007BFF;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.back-link:hover {
+    color: #0056b3;
+}
