@@ -28,7 +28,7 @@ class LoginForm(FlaskForm):
     
 class AddRoomForm(FlaskForm):
     number = StringField('Número', validators=[DataRequired()])
-    status = StringField('Estado') 
+    status = SelectField('Estado', choices=[('Disponible', 'Disponible'), ('Ocupado', 'Ocupado'),('Deshabilitada', 'Deshabilitada'),], validators=[DataRequired()])
     category = SelectField('Categoría', validators=[DataRequired()])
     name = StringField('Nombre', validators=[DataRequired()])
     description = StringField('Descripción')
@@ -37,7 +37,7 @@ class AddRoomForm(FlaskForm):
 class EditRoomForm(FlaskForm):
     room = SelectField('Room', coerce=int)
     number = StringField('Número', validators=[DataRequired()])
-    status = SelectField('Estado', choices=[('Disponible', 'Disponible'), ('Ocupado', 'Ocupado')], validators=[DataRequired()])
+    status = SelectField('Estado', choices=[('Disponible', 'Disponible'), ('Ocupado', 'Ocupado'),('Deshabilitada', 'Deshabilitada'),], validators=[DataRequired()])
     category = SelectField('Categoría', coerce=int, validators=[DataRequired()])
     name = StringField('Nombre', validators=[DataRequired()])
     description = TextAreaField('Descripción')
@@ -50,6 +50,7 @@ class DeleteRoomForm(FlaskForm):
 class ReservationForm(FlaskForm):
     user_id = SelectField('User', coerce=int, validators=[DataRequired()])
     room_id = SelectField('Room', coerce=int, validators=[DataRequired()])
+    num_people = IntegerField('Number of People', validators=[DataRequired()])
     check_in = DateField('Check-In Date', format='%Y-%m-%d', validators=[DataRequired()])
     check_out = DateField('Check-Out Date', format='%Y-%m-%d', validators=[DataRequired()])
     submit = SubmitField('Reservar')
@@ -66,7 +67,7 @@ class CancelReservationForm(FlaskForm):
 
 class ManageRoomForm(FlaskForm):
     room_id = SelectField('Habitación', coerce=int, validators=[DataRequired()])
-    new_status = SelectField('Nuevo Estado', choices=[('Disponible', 'Disponible'), ('Reservado', 'Reservado'), ('Inhabilitado', 'Inhabilitado')], validators=[DataRequired()])
+    new_status = SelectField('Nuevo Estado', choices=[('Disponible', 'Disponible'), ('Reservado', 'Reservado'), ('Deshabilitada', 'Deshabilitada')], validators=[DataRequired()])
     submit = SubmitField('Actualizar Estado')
 
 class AddUserForm(FlaskForm):
@@ -93,5 +94,5 @@ class EditUserForm(FlaskForm):
 class DeleteUserForm(FlaskForm):
     user_id = SelectField('User ID', validators=[DataRequired()], coerce=int)
     confirm_username = StringField('Confirm User\'s Username', validators=[DataRequired()])
-    confirm_delete = StringField('Confirm Deletion', validators=[DataRequired(), EqualTo('confirm_text', message='Confirmation text must be "DELETE"')])
+    confirm_delete = StringField('Confirm Deletion', validators=[DataRequired(), EqualTo('confirm_text', message='Para eliminar escribe "DELETE"')])
     submit = SubmitField('Delete User')

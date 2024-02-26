@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask_login import UserMixin
-from .app import db 
+from .app import db
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -46,11 +46,12 @@ class Room(db.Model):
     name = db.Column(db.String(50), nullable=False) 
     description = db.Column(db.String(200)) 
 
-    def __init__(self, number, category_id, name, description):
+    def __init__(self, number, category_id, name, description, status):
         self.number = number
         self.category_id = category_id
         self.name = name
         self.description = description
+        self.status =  status
 
     def __repr__(self):
         return f'<Room {self.number}>'
@@ -73,12 +74,14 @@ class RoomCategory(db.Model):
 class Reservation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    status = db.Column(db.String(50), nullable=False , default='Activo')
     check_in = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     check_out = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'), nullable=False)
     room = db.relationship('Room', backref='reservations')
     cancellation = db.relationship('Cancellation', backref='reservation', uselist=False, cascade='all, delete-orphan')
     num_people = db.Column(db.Integer, nullable=False) 
+
 
     def __init__(self, user_id, check_in, check_out, room_id, num_people):
         self.user_id = user_id

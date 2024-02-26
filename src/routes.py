@@ -2,14 +2,14 @@ from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, login_required, logout_user, current_user
 from sqlalchemy.exc import SQLAlchemyError
 import logging
-from .app import app, db  # Importa de manera relativa
+from .app import app, db  
 from .forms import AddRoomForm, AddUserForm, DeleteRoomForm, DeleteUserForm, EditReservationForm, EditRoomForm, EditUserForm, RegistrationForm, LoginForm, ReservationForm, CancelReservationForm, ManageRoomForm
 from .models import User, Room, RoomCategory, Reservation, Cancellation
 from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt(app)
 # Configuración del registro de errores
-logging.basicConfig(filename='error.log', level=logging.ERROR, format='%(asctime)s - %(levelname)s: %(message)s')
+#logging.basicConfig(filename='error.log', level=logging.ERROR, format='%(asctime)s - %(levelname)s: %(message)s')
 
 
 # Ruta de inicio
@@ -107,7 +107,7 @@ def view_users():
     return render_template('manage_users/view_users.html', users=users)
 
 @app.route('/manage_users/add_user', methods=['GET', 'POST'])
-@login_required  # Assuming you have a login_required decorator for protecting routes
+@login_required 
 def add_user():
     if current_user.role != 'admin':
         flash('No tienes permisos para acceder a esta página', 'danger')
@@ -116,12 +116,12 @@ def add_user():
     form = AddUserForm()
 
     if form.validate_on_submit():
-        # Check if the username is already taken
+        # Se verifica si el usuario existe
         existing_user = User.query.filter_by(username=form.username.data).first()
         if existing_user:
             flash('El nombre de usuario ya está en uso. Por favor, elija otro.', 'danger')
         else:
-            # Create a new user object and add it to the database
+            # Se crea un nuevo usuario y se agrega a la base de datos
             hashed_password = bcrypt.generate_password_hash(form.password.data)
             new_user = User(
                 username=form.username.data,
@@ -141,7 +141,7 @@ def add_user():
     return render_template('manage_users/add_user.html', form=form)
 
 @app.route('/manage_users/edit_user', methods=['GET', 'POST'])
-@login_required  # Assuming you have a login_required decorator for protecting routes
+@login_required 
 def edit_user():
     if current_user.role != 'admin':
         flash('No tienes permisos para acceder a esta página', 'danger')
@@ -204,18 +204,18 @@ def list_rooms():
 @login_required
 def filter_rooms():
     status_filter = request.form.get('status')
-
     if current_user.role == 'admin':
-        if status_filter == 'all':
-            rooms = Room.query.all()
-        else:
-            rooms = Room.query.filter_by(status=status_filter).all()
-        return render_template('rooms/list_rooms.html', rooms=rooms)
+            if status_filter == 'all':
+                rooms = Room.query.all()
+            else:
+                rooms = Room.query.filter_by(status=status_filter).all()
+            return render_template('rooms/list_rooms.html', rooms=rooms)
     elif current_user.role == 'guest':
-        user_rooms = Room.query.filter_by(user_id=current_user.id, status=status_filter).all()
-        return render_template('rooms/list_rooms.html', rooms=user_rooms)
+        status_filter = 'Disponible'
+        rooms = Room.query.filter_by(status=status_filter).all()
+        return render_template('rooms/list_rooms.html', rooms=rooms)
     else:
-        return redirect(url_for('home.html'))
+            return redirect(url_for('home.html'))
 
 @app.route('/rooms/add', methods=['GET', 'POST'])
 @login_required
@@ -253,11 +253,7 @@ def edit_room():
 
     all_rooms = Room.query.all()
     form = EditRoomForm()
-
-    # Rellenar las opciones de categoría
     form.category.choices = [(category.id, category.name) for category in RoomCategory.query.all()]
-
-    # Rellenar las opciones de habitación
     form.room.choices = [(room.id, room.number) for room in all_rooms]
 
     if form.validate_on_submit():
@@ -278,8 +274,6 @@ def delete_room():
         return redirect(url_for('dashboard'))
 
     form = DeleteRoomForm()
-
-    # Filtrar habitaciones disponibles para eliminar
     available_rooms = Room.query.filter_by(status='Disponible').all()
     form.room.choices = [(room.id, room.number) for room in available_rooms]
 
@@ -330,28 +324,38 @@ def filter_reservations():
 
         if reservations is not None:
             if not reservations:
-                flash('No reservations found.', 'info')
+                flash('No se encontraron Reservas.', 'info')
             
         return render_template('reservations/list_reservations.html', reservations=reservations)
 
     except SQLAlchemyError as e:
-        flash(f'An error occurred: {str(e)}', 'danger')
-        return redirect(url_for('dashboard'))
+        flash(f'Ocurrio un Error: {str(e)}', 'danger')
+        return redirect(url_for('index'))
 
 @app.route('/reservations/book', methods=['GET', 'POST'])
 @login_required
 def book_reservation():
     form = ReservationForm()
-    
-    form.user_id.choices = [(user.id, user.username) for user in User.query.all()]
+
+    if current_user.role == 'admin':
+        form.user_id.choices = [(user.id, user.username) for user in User.query.all()]
+    elif current_user.role == 'guest':
+        form.user_id.choices = [(current_user.id, current_user.username)]
+
     form.room_id.choices = [(room.id, room.number) for room in Room.query.filter_by(status='Disponible').all()]
 
+
+
     if form.validate_on_submit():
+        room_id = form.room_id.data
+        room = Room.query.get(room_id)
+        room.status = 'Ocupado'
         reservation = Reservation(
             user_id=form.user_id.data,
             room_id=form.room_id.data,
             check_in=form.check_in.data,
-            check_out=form.check_out.data
+            check_out=form.check_out.data,
+            num_people=form.num_people.data
         )
 
         db.session.add(reservation)
@@ -362,33 +366,67 @@ def book_reservation():
 
     return render_template('reservations/book_reservation.html', form=form)
 
+@app.route('/reservations/book_selected_room', methods=['POST'])
+@login_required
+def book_selected_room():
+    if current_user.role == 'guest':
+        room_id = request.form.get('room_id')
+
+        if room_id:
+            form = ReservationForm()
+            form.user_id.choices = [(current_user.id, current_user.username)]
+            form.room_id.choices = [(room.id, room.number) for room in Room.query.filter_by(id=room_id, status='Disponible').all()]
+
+            return render_template('reservations/book_reservation.html', form=form, room_id=room_id)
+        else:
+            flash('Error al seleccionar la habitación para reservar', 'danger')
+
+    return redirect(url_for('home'))
+
+
 # Rutas para cancelar reservas
 @app.route('/reservations/cancel', methods=['GET', 'POST'])
 @login_required
 def cancel_reservation():
     form = CancelReservationForm()
-    form.reservation_id.choices = [(reservation.id, f'{reservation.room.number} - {reservation.check_in}') for reservation in Reservation.query.filter_by(user_id=current_user.id).all()]
+
+    if current_user.role == 'admin':
+        user_reservations = Reservation.query.all()
+    elif current_user.role == 'guest':
+        user_reservations = Reservation.query.filter_by(user_id=current_user.id).all()
+    else:
+        flash('Acceso no autorizado', 'danger')
+        return redirect(url_for('home'))
+
+    form.reservation_id.choices = [(reservation.id, f'{reservation.room.number} - {reservation.check_in}') for reservation in user_reservations]
 
     if form.validate_on_submit():
-        reservation = Reservation.query.get(form.reservation_id.data)
+        reservation_id = form.reservation_id.data
+        reservation = Reservation.query.get(reservation_id)
+
         if reservation:
+            room = Room.query.get(reservation.room_id)
+            room.status = 'Disponible'
+            
             db.session.delete(reservation)
             db.session.commit()
             flash('Reserva cancelada exitosamente', 'success')
+            return redirect(url_for('list_reservations'))
         else:
             flash('Reserva no encontrada', 'danger')
 
     return render_template('reservations/cancel_reservation.html', form=form)
 
+
 @app.route('/reservations/edit', methods=['GET', 'POST'])
 @login_required
 def edit_reservation():
     if current_user.role != 'admin':
-        flash('You do not have permission to access this page', 'danger')
+        flash('No tienes permiso de acceso a esta pagina', 'danger')
         return redirect(url_for('dashboard'))
 
     form = EditReservationForm()
-    guest = None  # Initialize guest outside the conditional block
+    guest = None 
 
     if form.validate_on_submit():
         reservation_id = form.reservation_id.data
@@ -408,10 +446,10 @@ def edit_reservation():
                 reservation.room_id = form.reservation_id.data
                 db.session.commit()
 
-                flash('Reservation successfully edited', 'success')
+                flash('Reservacion editada exitosamente', 'success')
                 return redirect(url_for('list_reservations'))
             else:
-                flash('Room not found', 'danger')
+                flash('Habitacion no encontrada', 'danger')
 
     return render_template('reservations/edit_reservation.html', form=form, guest=guest)
 

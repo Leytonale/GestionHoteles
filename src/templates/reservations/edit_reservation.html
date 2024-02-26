@@ -10,20 +10,19 @@
 </head>
 <body>
     <div class="container">
-        <h1>Edit Reservation</h1>
+        <h1>Editar Reservacion</h1>
         <form method="POST" action="{{ url_for('edit_reservation') }}" class="edit-reservation-form">
             {{ form.hidden_tag() }}
             
             <div class="form-group">
-                <label for="reservation_id">Select Reservation:</label>
+                <label for="reservation_id">Elegir Reservacion:</label>
                 {{ form.reservation_id(class="form-control") }}
             </div>
             
-            <button type="submit" class="btn btn-primary">Select Reservation</button>
+            <button type="submit" class="btn btn-primary">Actualizar Reservacion</button>
         </form>
         
-        <p><a href="{{ url_for('list_reservations') }}" class="back-link">Back to Reservation List</a></p>
-        <p><a href="{{ url_for('dashboard') }}" class="back-link">Back to Dashboard</a></p>
+        <p><a href="{{ url_for('dashboard') }}" class="back-link">Volver al Dashboard</a></p>
     </div>
 </body>
 </html>

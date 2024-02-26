@@ -12,31 +12,39 @@
 
 <body>
     <div class="container">
-        <h1>List of Rooms</h1>
+        <h1>Lista de Habitaciones</h1>
 
         {% if current_user.role == 'guest' %}
         <div class="guest-section">
-            <h2>Available Rooms</h2>
-            {% if available_rooms %}
+            <h2>Habitaciones Disponibles</h2>
+            {% if rooms %}
             <ul>
-                {% for room in available_rooms %}
-                <li>{{ room.number }} - {{ room.status }}</li>
+                {% for room in rooms %}
+                <li>
+                    {{ room.number }} - {{ room.status }}
+                    {% if room.status == 'Disponible' %}
+                        <form action="{{ url_for('book_selected_room') }}" method="post" style="display: inline;">
+                            <input type="hidden" name="room_id" value="{{ room.id }}">
+                            <button type="submit">Reservar</button>
+                        </form>
+                    {% endif %}
+                </li>
                 {% endfor %}
             </ul>
             {% else %}
-            <p>No available rooms at the moment. Please check again later or contact the hotel.</p>
+            <p>No hay habitaciones disponibles en este momento. Por favor, revisa nuevamente más tarde o contacta al hotel.</p>
             {% endif %}
-            <p><a href="{{ url_for('home') }}">Back to Home</a></p>
+            <p><a href="{{ url_for('home') }}">Volver al Home</a></p>
         </div>
         {% elif current_user.role == 'admin' %}
         <div class="admin-section">
-            <h2>All Rooms</h2>
+            <h2>Todas las Habitaciones</h2>
             <form action="{{ url_for('filter_rooms') }}" method="post">
-                <label for="status">Filter by Status:</label>
+                <label for="status">Filtrar por Estado:</label>
                 <select name="status" id="status">
-                    <option value="all">All</option>
-                    <option value="Disponible">Available</option>
-                    <option value="Ocupada">Occupied</option>
+                    <option value="all">Todos</option>
+                    <option value="Disponible">Disponible</option>
+                    <option value="Ocupada">Ocupada</option>
                     <option value="Deshabilitada">Deshabilitada</option>
                 </select>
             <div id="submitboton">
@@ -48,7 +56,7 @@
                 {% endfor %}
             </ul>
             <div class="button-align">
-                <p><a href="{{ url_for('dashboard') }}">Volver al panel</a></p>
+                <p><a href="{{ url_for('dashboard') }}">Volver al Dashboard</a></p>
         </div>
         </div>
         {% endif %}

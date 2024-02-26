@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Login</h1>
+        <h1>Logearse</h1>
         <form method="post" action="{{ url_for('login') }}">
             {{ form.hidden_tag() }}
             {{ form.csrf_token }}
@@ -18,7 +18,7 @@
             <p>{{ form.password.label }} {{ form.password() }}</p>
             <p>{{ form.submit() }}</p>
         </form>
-        <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+        <p>No estas registrado? <a href="{{ url_for('register') }}">Registrese</a></p>
     </div>
 </body>
 </html>

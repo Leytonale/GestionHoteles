@@ -10,37 +10,37 @@
 </head>
 <body>
     <div class="container">
-        <h1>Add User</h1>
-        <p>Fill in the details to add a new user.</p>
+        <h1>Agrega un Usuario</h1>
+        <p>Llena los detalles para agregar un nuevo usuario.</p>
 
         <form method="POST" action="{{ url_for('add_user') }}">
             <div class="form-group">
-                <label for="username">Username:</label>
+                <label for="username">Usuario:</label>
                 {{ form.username(class="form-control", id="username", placeholder="Enter username") }}
             </div>
 
             <div class="form-group">
-                <label for="password">Password:</label>
+                <label for="password">Contraseña:</label>
                 {{ form.password(class="form-control", id="password", placeholder="Enter password") }}
             </div>
 
             <div class="form-group">
-                <label for="confirm_password">Confirm Password:</label>
+                <label for="confirm_password">Confirmar Contraseña:</label>
                 {{ form.confirm_password(class="form-control", id="confirm_password", placeholder="Confirm password") }}
             </div>
 
             <div class="form-group">
-                <label for="role">Role:</label>
+                <label for="role">Rol:</label>
                 {{ form.role(class="form-control", id="role") }}
             </div>
 
             <div class="form-group">
-                <label for="first_name">First Name:</label>
+                <label for="first_name">Nombres:</label>
                 {{ form.first_name(class="form-control", id="first_name", placeholder="Enter first name") }}
             </div>
 
             <div class="form-group">
-                <label for="last_name">Last Name:</label>
+                <label for="last_name">Apellidos:</label>
                 {{ form.last_name(class="form-control", id="last_name", placeholder="Enter last name") }}
             </div>
 
@@ -50,14 +50,14 @@
             </div>
 
             <div class="form-group">
-                <label for="birthdate">Birthdate:</label>
+                <label for="birthdate">Fecha de Nacimiento:</label>
                 {{ form.birthdate(class="form-control", id="birthdate") }}
             </div>
 
-            <button type="submit" class="btn btn-primary">Add User</button>
+            <button type="submit" class="btn btn-primary">Agregar Usuario</button>
         </form>
 
-        <p><a href="{{ url_for('dashboard') }}">Back to dashboard</a></p>
+        <p><a href="{{ url_for('dashboard') }}">Volver al Dashboard</a></p>
     </div>
 </body>
 </html>

@@ -10,16 +10,20 @@
 </head>
 <body>
     <div class="container">
-        <h1>Book Reservation</h1>
+        <h1>Agendar Reservaciones</h1>
         <form action="{{ url_for('book_reservation') }}" method="post">
             {{ form.hidden_tag() }}
             <div class="form-group">
-                <label for="user_id">User:</label>
+                <label for="user_id">Usuario:</label>
                 {{ form.user_id(class="form-control") }}
             </div>
             <div class="form-group">
-                <label for="room">Room:</label>
+                <label for="room">Habitacion:</label>
                 {{ form.room_id(class="form-control") }}
+            </div>
+            <div class="form-group">
+                <label for="num_people">Número de Personas:</label>
+                {{ form.num_people(class="form-control") }}
             </div>
             <div class="form-group">
                 <label for="check_in">Check-in:</label>
@@ -32,8 +36,7 @@
             <input type="submit" value="Book Reservation" class="btn btn-primary">
         </form>
 
-        <p><a href="{{ url_for('list_reservations') }}" class="back-link">Back to List of Reservations</a></p>
-        <p><a href="{{ url_for('dashboard') }}" class="back-link">Back to Dashboard</a></p>
+        <p><a href="{{ url_for('dashboard') }}" class="back-link">Volver al Dashboard</a></p>
     </div>
 </body>
 </html>

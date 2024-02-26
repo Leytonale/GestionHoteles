@@ -7,7 +7,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/gestion_hotel'  # Update with your actual database URI
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/gestion_hotel'  
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 
@@ -70,7 +70,7 @@ with app.app_context():
     if not default_room:
         default_room = Room(
             number='101',
-            category_id=default_category.id,  # Ajusta según la relación en tu modelo
+            category_id=default_category.id,  
             name='Default Room',
             description='Default room description'
         )

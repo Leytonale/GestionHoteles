@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,17 +9,17 @@
 </head>
 <body>
     <div class="container">
-        <h1>List of Reservations</h1>
+        <h1>Lista de Reservaciones</h1>
         {% if current_user.role == 'guest' %}
             <div>
-                <h2>Your Reservations</h2>
+                <h2>Tus Reservaciones</h2>
                 <form action="{{ url_for('filter_reservations') }}" method="post">
-                    <label for="status">Filter by Status:</label>
+                    <label for="status">Filtrar por Estado:</label>
                     <select name="status" id="status">
-                        <option value="all">All</option>
-                        <option value="Active">Active</option>
-                        <option value="Past">Past</option>
-                        <option value="Cancelled">Cancelled</option>
+                        <option value="all">Todos</option>
+                        <option value="Active">Activo</option>
+                        <option value="Past">Pasado</option>
+                        <option value="Cancelled">Canceladas</option>
                     </select>
                     <input type="submit" value="Filter">
                 </form>
@@ -27,27 +27,31 @@
                     {% if reservations %}
                         <ul>
                             {% for reservation in reservations %}
-                                <li>{{ reservation.room.number }} - {{ reservation.check_in }} - {{ reservation.status }}</li>
+                                <li>{{ reservation.room.number }} - {{ reservation.check_in }} - {{ reservation.status }}
+                                    | <a href="{{ url_for('edit_reservation', reservation_id=reservation.id) }}">Editar</a>
+                                    | <a href="{{ url_for('cancel_reservation', reservation_id=reservation.id) }}">Cancelar</a>
+                                </li>
                             {% endfor %}
                         </ul>
                     {% else %}
-                        <p>No reservations found.</p>
+                        <p>No se encontraron Reservaciones.</p>
                     {% endif %}
                 {% else %}
-                    <p>Error retrieving reservations.</p>
-                    <p><a href="{{ url_for('home') }}">Back to home</a></p>
+                    <p>Error al buscar reservaciones.</p>
+                    <p><a href="{{ url_for('home') }}">Volver al Home</a></p>
                 {% endif %}
+                <p><a href="{{ url_for('home') }}">Volver al Home</a></p>
             </div>
         {% elif current_user.role == 'admin' %}
             <div>
-                <h2>All Reservations</h2>
+                <h2>Reservas</h2>
                 <form action="{{ url_for('filter_reservations') }}" method="post">
-                    <label for="status">Filter by Status:</label>
+                    <label for="status">Filtrar por Estado:</label>
                     <select name="status" id="status">
-                        <option value="all">All</option>
-                        <option value="Active">Active</option>
-                        <option value="Past">Past</option>
-                        <option value="Cancelled">Cancelled</option>
+                        <option value="all">Todos</option>
+                        <option value="Active">Activo</option>
+                        <option value="Past">Pasado</option>
+                        <option value="Cancelled">Canceladas</option>
                     </select>
                     <input type="submit" value="Filter">
                 </form>
@@ -57,18 +61,19 @@
                             {% for reservation in reservations %}
                                 <li>
                                     {{ reservation.room.number }} - {{ reservation.check_in }} - {{ reservation.status }} 
-                                    | <a href="{{ url_for('edit_reservation', reservation_id=reservation.id) }}">Edit</a>
-                                    | <a href="{{ url_for('delete_reservation', reservation_id=reservation.id) }}">Delete</a>
+                                    | <a href="{{ url_for('edit_reservation', reservation_id=reservation.id) }}">Editar</a>
+                                    | <a href="{{ url_for('cancel_reservation', reservation_id=reservation.id) }}">Cancelar</a>
                                 </li>
                             {% endfor %}
                         </ul>
                     {% else %}
-                        <p>No reservations found.</p>
+                        <p>No se encontraron Reservaciones</p>
                     {% endif %}
+                    
                 {% else %}
-                    <p>Error retrieving reservations.</p>
+                    <p>Error al buscar reservaciones.</p>
                 {% endif %}
-                <p><a href="{{ url_for('dashboard') }}">Back to dashboard</a></p>
+                <p><a href="{{ url_for('dashboard') }}">Volver al Dashboard</a></p>
             </div>
         {% endif %}
     </div>
